@@ -34,5 +34,10 @@ vcpkg integrate install
 
 7. Enjoy <3
 
+## Problems when building
+If you are experiencing errors when building the project, particularly errors about the function "wcstombs" being unsafe, add ``_CRT_SECURE_NO_WARNINGS`` to ``Properties -> Configuration Properties -> C/C++ -> Preprocessor -> Preprocessor Defenitions`` in Visual Studio.
+
+![alt text](https://i.imgur.com/NnkOFgp.png)
+
 ## License
 This project is licensed under the GNU General Public License v3.0. See the [LICENSE](https://github.com/atari-1337/VersionScanner/blob/main/LICENSE) file for more information.

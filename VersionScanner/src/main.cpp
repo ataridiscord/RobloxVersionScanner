@@ -4,6 +4,7 @@
 #include <string>
 #include <format>
 #include <filesystem>
+#include <shlobj.h>
 
 __forceinline std::size_t writeFunction(void* ptr, unsigned long long size, unsigned long long nmemb, std::string* data)
 {
@@ -17,13 +18,28 @@ int main()
     std::string header{};
     auto response_code{0ul};
 
-    const auto versions_path = "C:\\Users\\" + std::string(getenv("username")) + "\\AppData\\Local\\Roblox\\Versions\\";
-    const auto latest_version_path = "C:\\Users\\" + std::string(getenv("username")) + "\\AppData\\Local\\Roblox\\Versions\\" + response;
+    PWSTR data = NULL;
+    char dest[MAX_PATH];
+
+    if (SHGetKnownFolderPath(FOLDERID_LocalAppData, KF_FLAG_DEFAULT, NULL, &data) == S_OK) {
+        wcstombs(dest, data, MAX_PATH);
+    }
+    else {
+        std::printf("Failed to fetch AppData path.\n");
+        std::cin.get();
+        return EXIT_FAILURE;
+    }
+
+    std::string appdata = dest;
+
+    const auto versions_path = appdata + std::string("\\Roblox\\Versions\\");
+    const auto latest_version_path = appdata + std::string("\\Roblox\\Versions\\") + response;
 
     SetConsoleTitleA("Version Scanner - atari#5297");
 
-    std::printf("This project is licensed under: GNU GENERAL PUBLIC LICENSE\nhttps://github.com/atari-1337/VersionScanner/blob/main/LICENSE\n\n");
-    std::printf("Fetching current Roblox version...\n");
+    std::printf("This project is licensed under: GNU GENERAL PUBLIC LICENSE\n"
+        "https://github.com/atari-1337/VersionScanner/blob/main/LICENSE\n\n"
+        "Fetching current Roblox version...\n");
 
     curl_global_init(CURL_GLOBAL_DEFAULT);
     auto session = curl_easy_init();
