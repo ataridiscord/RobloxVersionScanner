@@ -69,7 +69,7 @@ int main()
     curl_easy_cleanup(session);
     curl_global_cleanup();
 
-    std::printf("Current Roblox Version: %s\n", response);
+    std::cout << "Current Roblox Version: " << response << "\n";
 
     if (!std::filesystem::exists(versions_path))
     {
